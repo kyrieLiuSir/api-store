@@ -21,7 +21,7 @@ services:
       - ./data:/data
       - ./logs:/app/logs
     environment:
-      - SQL_DSN=postgresql://root:123456@postgres:5432/new-api
+      - SQL_DSN=postgresql://root:ly652992429123@postgres:5432/new-api
       - REDIS_CONN_STRING=redis://redis
       - TZ=Asia/Shanghai
       - ERROR_LOG_ENABLED=true
@@ -50,7 +50,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: root
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_PASSWORD: ly652992429123
       POSTGRES_DB: new-api
     volumes:
       - pg_data:/var/lib/postgresql/data
