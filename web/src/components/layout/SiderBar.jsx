@@ -201,18 +201,7 @@ const SiderBar = ({ onNavigate = () => {} }) => {
   }, [isAdmin(), isRoot(), t, isModuleVisible]);
 
   const chatMenuItems = useMemo(() => {
-    const items = [
-      {
-        text: t('操练场'),
-        itemKey: 'playground',
-        to: '/playground',
-      },
-      {
-        text: t('聊天'),
-        itemKey: 'chat',
-        items: chatItems,
-      },
-    ];
+    const items = [];
 
     // 根据配置过滤项目
     const filteredItems = items.filter((item) => {
@@ -439,16 +428,6 @@ const SiderBar = ({ onNavigate = () => {} }) => {
             setOpenedKeys(data.openKeys);
           }}
         >
-          {/* 聊天区域 */}
-          {hasSectionVisibleModules('chat') && (
-            <div className='sidebar-section'>
-              {!collapsed && (
-                <div className='sidebar-group-label'>{t('聊天')}</div>
-              )}
-              {chatMenuItems.map((item) => renderSubItem(item))}
-            </div>
-          )}
-
           {/* 控制台区域 */}
           {hasSectionVisibleModules('console') && (
             <>
