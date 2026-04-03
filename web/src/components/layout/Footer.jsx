@@ -20,6 +20,7 @@ For commercial licensing, please contact support@quantumnous.com
 import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@douyinfe/semi-ui';
+import { Link } from 'react-router-dom';
 import { getFooterHTML, getLogo, getSystemName } from '../../helpers';
 import { StatusContext } from '../../context/Status';
 
@@ -62,30 +63,9 @@ const FooterBar = () => {
                   {t('关于我们')}
                 </p>
                 <div className='flex flex-col gap-4'>
-                  <a
-                    href='https://docs.newapi.pro/wiki/project-introduction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
-                  >
+                  <Link to='/about?doc=quickstart' className='!text-semi-color-text-1'>
                     {t('关于项目')}
-                  </a>
-                  <a
-                    href='https://docs.newapi.pro/support/community-interaction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
-                  >
-                    {t('联系我们')}
-                  </a>
-                  <a
-                    href='https://docs.newapi.pro/wiki/features-introduction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
-                  >
-                    {t('功能特性')}
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -94,30 +74,30 @@ const FooterBar = () => {
                   {t('文档')}
                 </p>
                 <div className='flex flex-col gap-4'>
-                  <a
-                    href='https://docs.newapi.pro/getting-started/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                  <Link
+                    to='/docs?doc=quickstart'
                     className='!text-semi-color-text-1'
                   >
-                    {t('快速开始')}
-                  </a>
-                  <a
-                    href='https://docs.newapi.pro/installation/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    {t('创建API KEY')}
+                  </Link>
+                  <Link
+                    to='/docs?doc=gpt-codex'
                     className='!text-semi-color-text-1'
                   >
-                    {t('安装指南')}
-                  </a>
-                  <a
-                    href='https://docs.newapi.pro/api/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    {t('GPT-codex 安装教程')}
+                  </Link>
+                  <Link
+                    to='/docs?doc=claudecode'
                     className='!text-semi-color-text-1'
                   >
-                    {t('API 文档')}
-                  </a>
+                    {t('claudecode 安装教程（Win/Mac）')}
+                  </Link>
+                  <Link
+                    to='/docs?doc=openclaw'
+                    className='!text-semi-color-text-1'
+                  >
+                    {t('OpenClaw 接入 API 教程')}
+                  </Link>
                 </div>
               </div>
 
