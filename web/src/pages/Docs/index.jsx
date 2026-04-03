@@ -18,19 +18,15 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React, { useMemo } from 'react';
-import { Button, Card, Typography } from '@douyinfe/semi-ui';
-import { useTranslation } from 'react-i18next';
+import { Button, Card } from '@douyinfe/semi-ui';
 import { useSearchParams } from 'react-router-dom';
 import MarkdownRenderer from '../../components/common/markdown/MarkdownRenderer';
-
-const { Title, Text } = Typography;
 
 const DOC_ITEMS = [
   {
     key: 'quickstart',
     title: '创建API KEY',
     markdown: `
-# 创建API KEY
 
 按照下面的步骤操作，即可完成账号注册、兑换码充值和 API Key 创建。
 
@@ -80,98 +76,195 @@ const DOC_ITEMS = [
   },
   {
     key: 'gpt-codex',
-    title: 'GPT-codex 安装教程',
+    title: 'codex 安装教程',
     markdown: `
-# GPT-codex 安装教程
 
-## 1. 准备 API 信息
+## 1. 下载 cc switch
 
-- Base URL：\`https://apisstore.com/v1\`
-- API Key：使用你在站点后台生成的密钥
+- 下载地址：
+- <https://pan.baidu.com/s/1rNw_jVWEDd6Gz0HpDY7Quw?pwd=5588>
 
-## 2. 常见配置思路
-
-支持自定义 OpenAI 兼容地址的工具，一般只需要填写：
-
-- API Key：\`YOUR_API_KEY\`
-- Base URL：\`https://apisstore.com/v1\`
-- Model：按站点已开通模型填写
-
-## 3. 环境变量示例
+## 2. 安装 codex
 
 \`\`\`bash
-export OPENAI_API_KEY=YOUR_API_KEY
-export OPENAI_BASE_URL=https://apisstore.com/v1
+npm i -g @openai/codex
 \`\`\`
 
-## 4. 验证是否连通
+## 3. 配置 Key
 
-\`\`\`bash
-curl https://apisstore.com/v1/models \\
-  -H "Authorization: Bearer YOUR_API_KEY"
-\`\`\`
+- 点击 Add Provider
+- 输入 Provider Name（可自定义）
+- API Key：填写第一步创建 API Key 后复制的令牌
+- API Request URL：\`https://apisstore.com/v1\`
+- 模型选择：\`gpt-5.4\`
+- 填写完成后打开终端，输入 \`codex\` 即可开始对话
 
-如果能正常返回模型列表，说明接入完成。
+![Add Provider 示例](/img.png)
+
+![配置完成示例](/img_1.png)
 `,
   },
   {
     key: 'claudecode',
-    title: 'claudecode 安装教程（Win/Mac）',
+    title: 'claudecode 安装教程',
     markdown: `
-# claudecode 安装教程（Win/Mac）
 
-## Windows / macOS 通用配置
+按照下面步骤操作，即可在 Windows 或 macOS 上完成 Claude Code 安装与接入。
 
-1. 安装客户端或命令行工具。
-2. 在配置页中找到自定义 API / OpenAI Compatible / Base URL 配置项。
-3. 填入以下信息：
+---
 
-- Base URL：\`https://apisstore.com/v1\`
-- API Key：\`YOUR_API_KEY\`
-- Model：按站点支持的模型填写
+## 1. 下载 cc switch
 
-## 推荐检查项
+- 下载地址：
+- <https://pan.baidu.com/s/1rNw_jVWEDd6Gz0HpDY7Quw?pwd=5588>
 
-- 确认系统代理没有拦截请求。
-- 确认 API Key 没有多余空格。
-- 确认请求地址使用的是 \`https://apisstore.com/v1\`，不是旧域名。
+---
 
-## 测试建议
+## 2. 安装 Claude Code
 
-先发送一个最简单的对话请求，确认响应正常后，再导入你自己的完整配置。
+Windows 和 macOS 都可以在终端执行下面命令：
+
+\`\`\`bash
+npm install -g @anthropic-ai/claude-code
+\`\`\`
+
+如果提示没有 Node.js / npm，请先安装 Node.js 18 及以上版本，再重新执行命令。
+
+---
+
+## 3. 创建并复制 API Key
+
+- 先在本站控制台完成 API Key 创建。
+- 创建完成后，复制生成的令牌，后续配置时会用到。
+
+如果还没有创建，可以先查看左侧的「创建API KEY」教程。
+
+---
+
+## 4. 在 cc switch 中添加 Provider
+
+- 打开 cc switch。
+- 切换到 Claude。
+- 点击 \`Add Provider\`。
+
+先找到 Claude 页签，再点击右侧的 \`Add Provider\`：
+
+![切换到 Claude 并添加 Provider](/img_2.png)
+
+然后填写以下内容：
+
+- Provider Name：自定义名称，方便自己识别即可
+- API Key：粘贴刚才复制的令牌
+- API Endpoint：\`https://apisstore.com\`
+- 其他项目保持默认，或按你的实际需求填写
+
+填写完成后点击右下角 \`Add\` 保存。
+
+![填写 Provider 信息](/img_3.png)
+
+---
+
+## 5. 启动 Claude Code
+
+- 打开终端
+- 输入命令：
+
+\`\`\`bash
+claude
+\`\`\`
+
+- 启动后即可开始对话和使用 Claude Code。
+- 如果是第一次启动，建议先发送一句简单问候，确认连接已生效。
+
+---
+
+## Windows 使用说明
+
+- 推荐使用 PowerShell、Windows Terminal 或 Git Bash 执行安装命令。
+- 如果执行 \`claude\` 提示“不是内部或外部命令”，通常是 npm 全局路径还没生效，重开终端后再试一次。
+- 如果公司网络有限制，先确认没有代理或安全软件拦截请求。
+
+## macOS 使用说明
+
+- 推荐使用系统自带 Terminal 或 iTerm2。
+- 如果遇到权限问题，可先确认 Node.js 与 npm 已正确安装，再重新执行安装命令。
+- 安装完成后如果命令未生效，重新打开一个终端窗口再执行 \`claude\`。
+
+## 常见检查项
+
+- API Key 前后不要带空格
+- API Endpoint 填写为 \`https://apisstore.com\`
+- Claude 页面中选择的是刚刚新增的 Provider
+- 如果无法正常请求，优先检查网络、终端环境变量和 Node.js 版本
 `,
   },
   {
     key: 'openclaw',
-    title: 'OpenClaw 接入 API 教程',
+    title: 'OpenClaw 接入教程',
     markdown: `
-# OpenClaw 接入 API 教程
 
-## 接入参数
+按照下面步骤操作，即可完成 OpenClaw 安装、基础引导和自定义 Provider 配置。
 
-- API Key：站点后台生成的密钥
-- Base URL：\`https://apisstore.com/v1\`
-- 协议类型：OpenAI Compatible
+---
 
-## 配置流程
+## 1. 安装 OpenClaw
 
-1. 打开 OpenClaw 设置。
-2. 新增一个自定义提供商。
-3. 将接口地址设置为 \`https://apisstore.com/v1\`。
-4. 填入 API Key。
-5. 选择站点支持的模型并保存。
+\`\`\`bash
+npm install -g openclaw
+\`\`\`
 
-## 排错建议
+如果提示没有 Node.js / npm，请先安装 Node.js 18 及以上版本，再重新执行命令。
 
-- 报 401：检查 API Key 是否正确。
-- 报 404：检查 Base URL 是否写成了 \`https://apisstore.com/v1\`。
-- 报模型不存在：改为站点当前可用模型名称。
+---
+
+## 2. 执行初始化引导
+
+安装完成后，在终端执行下面命令：
+
+\`\`\`bash
+openclaw onboard --install-daemon
+\`\`\`
+
+执行过程中根据提示完成基础设置。
+
+---
+
+## 3. 选择 Custom Provider
+
+- 在模型提供商这里选择 \`Custom Provider\`
+- 后续按下面参数填写
+
+![选择 Custom Provider](/img_4.png)
+
+---
+
+## 4. 填写接入参数
+
+- URL：\`https://apisstore.com/v1\`
+- API KEY：填写你在站点后台创建的令牌 Key
+- EndPoint-compatibility：选择 \`OpenAI-compatible\`
+- Model ID：填写 \`gpt-5.4\`
+- endpoint id：直接回车，使用默认值即可
+- model alias：可选项，直接回车跳过即可
+
+---
+
+## 5. 完成配置并开始使用
+
+- 保存配置后即可通过 OpenClaw 发起请求
+- 如果是第一次接入，建议先发送一条简单测试消息，确认模型返回正常
+
+## 常见检查项
+
+- URL 必须填写为 \`https://apisstore.com/v1\`
+- API KEY 前后不要带空格
+- \`EndPoint-compatibility\` 需选择 \`OpenAI-compatible\`
+- 模型名称请填写当前可用模型，例如 \`gpt-5.4\`
 `,
   },
 ];
 
 const Docs = () => {
-  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDoc = searchParams.get('doc') || DOC_ITEMS[0].key;
 
