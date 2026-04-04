@@ -27,6 +27,7 @@ export const useNavigation = (t, _docsLink, headerNavModules) => {
       console: true,
       pricing: true,
       docs: true,
+      contact: true,
     };
 
     // 使用传入的配置或默认配置
@@ -53,12 +54,20 @@ export const useNavigation = (t, _docsLink, headerNavModules) => {
         itemKey: 'docs',
         to: '/docs',
       },
+      {
+        text: t('联系我们'),
+        itemKey: 'contact',
+        to: '/contact',
+      },
     ];
 
     // 根据配置过滤导航链接
     return allLinks.filter((link) => {
       if (link.itemKey === 'docs') {
         return modules.docs;
+      }
+      if (link.itemKey === 'contact') {
+        return modules.contact !== false;
       }
       if (link.itemKey === 'pricing') {
         // 支持新的pricing配置格式

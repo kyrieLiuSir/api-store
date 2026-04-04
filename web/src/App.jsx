@@ -54,6 +54,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const About = lazy(() => import('./pages/About'));
 const Docs = lazy(() => import('./pages/Docs'));
+const Contact = lazy(() => import('./pages/Contact'));
 const UserAgreement = lazy(() => import('./pages/UserAgreement'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 
@@ -348,6 +349,14 @@ function App() {
           element={
             <Suspense fallback={<Loading></Loading>} key={location.pathname}>
               <About />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/contact'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <Contact />
             </Suspense>
           }
         />
