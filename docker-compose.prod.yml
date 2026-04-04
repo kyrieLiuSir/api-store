@@ -11,7 +11,7 @@ version: '3.4'
 
 services:
   new-api:
-    image: ${GHCR_IMAGE:-ghcr.io/quantumnous/new-api:latest}
+    image: ${GHCR_IMAGE:-ghcr.io/kyrieliusir/api-store:latest}
     container_name: new-api
     restart: always
     command: --log-dir /app/logs
