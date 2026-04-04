@@ -21,7 +21,7 @@ services:
       - ./data:/data
       - ./logs:/app/logs
     environment:
-      - SQL_DSN=postgresql://root:ly652992429123@postgres:5432/new-api
+      - SQL_DSN=postgresql://root:ly652992429123@postgres:5432/new-api?sslmode=disable
       - REDIS_CONN_STRING=redis://redis
       - TZ=Asia/Shanghai
       - ERROR_LOG_ENABLED=true
