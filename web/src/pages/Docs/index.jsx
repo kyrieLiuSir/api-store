@@ -87,22 +87,28 @@ const DOC_ITEMS = [
 
 ## 2. 安装 codex
 
+- 下载安装nodejs: https://nodejs.org/zh-cn/download/
 \`\`\`bash
 npm i -g @openai/codex
 \`\`\`
 
 ## 3. 配置 Key
 
-- 点击 Add Provider
-- 输入 Provider Name（可自定义）
-- API Key：填写第一步创建 API Key 后复制的令牌
-- API Request URL：\`https://apisstore.com/v1\`
-- 模型选择：\`gpt-5.4\`
-- 填写完成后打开终端，输入 \`codex\` 即可开始对话
+- 切换到gpt页签,点击右侧加号
 
 ![Add Provider 示例](/img.png)
 
+- 输入 供应商名称 ApiStore
+- API Key：填写控制台令牌管理的秘钥
+- API请求地址：\`https://apisstore.com/v1\`
+- 其他可不填写,输入完成后点击右下角添加按钮
+
 ![配置完成示例](/img_1.png)
+- 保存后即可在列表中查看
+![Add Provider 示例](/codex-list.png)
+- 打开终端,输入codex即可对话
+![Add Provider 示例](/codex-terminal.png)
+
 `,
   },
   {
@@ -123,6 +129,7 @@ npm i -g @openai/codex
 
 ## 2. 安装 Claude Code
 
+下载安装nodejs: https://nodejs.org/zh-cn/download/
 Windows 和 macOS 都可以在终端执行下面命令：
 
 \`\`\`bash
@@ -131,52 +138,21 @@ npm install -g @anthropic-ai/claude-code
 
 如果提示没有 Node.js / npm，请先安装 Node.js 18 及以上版本，再重新执行命令。
 
----
+## 3. 配置 Key
 
-## 3. 创建并复制 API Key
+- 切换到claude页签,点击右侧加号
 
-- 先在本站控制台完成 API Key 创建。
-- 创建完成后，复制生成的令牌，后续配置时会用到。
+![Add Provider 示例](/claude-entry.png)
 
-如果还没有创建，可以先查看左侧的「创建API KEY」教程。
+- 输入 供应商名称 ApiStore
+- API Key：填写控制台令牌管理的秘钥
+- API请求地址：\`https://apisstore.com\`
+- 其他可不填写,输入完成后点击右下角添加按钮
 
----
-
-## 4. 在 cc switch 中添加 Provider
-
-- 打开 cc switch。
-- 切换到 Claude。
-- 点击 \`Add Provider\`。
-
-先找到 Claude 页签，再点击右侧的 \`Add Provider\`：
-
-![切换到 Claude 并添加 Provider](/img_2.png)
-
-然后填写以下内容：
-
-- Provider Name：自定义名称，方便自己识别即可
-- API Key：粘贴刚才复制的令牌
-- API Endpoint：\`https://apisstore.com\`
-- 其他项目保持默认，或按你的实际需求填写
-
-填写完成后点击右下角 \`Add\` 保存。
-
-![填写 Provider 信息](/img_3.png)
-
----
-
-## 5. 启动 Claude Code
-
-- 打开终端
-- 输入命令：
-
-\`\`\`bash
-claude
-\`\`\`
-
-- 启动后即可开始对话和使用 Claude Code。
-- 如果是第一次启动，建议先发送一句简单问候，确认连接已生效。
-
+![配置完成示例](/claude-form.png)
+- 保存后即可在列表中查看
+![Add Provider 示例](/claude-list.png)
+- 打开终端,输入claude即可对话
 ---
 
 ## Windows 使用说明
