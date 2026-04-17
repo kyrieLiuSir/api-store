@@ -163,26 +163,9 @@ npm install -g @anthropic-ai/claude-code
 - 保存后即可在列表中查看
 ![Add Provider 示例](/claude-list.png)
 - 打开终端,输入claude即可对话
+![示例](/claude-terminal.png)
 ---
 
-## Windows 使用说明
-
-- 推荐使用 PowerShell、Windows Terminal 或 Git Bash 执行安装命令。
-- 如果执行 \`claude\` 提示“不是内部或外部命令”，通常是 npm 全局路径还没生效，重开终端后再试一次。
-- 如果公司网络有限制，先确认没有代理或安全软件拦截请求。
-
-## macOS 使用说明
-
-- 推荐使用系统自带 Terminal 或 iTerm2。
-- 如果遇到权限问题，可先确认 Node.js 与 npm 已正确安装，再重新执行安装命令。
-- 安装完成后如果命令未生效，重新打开一个终端窗口再执行 \`claude\`。
-
-## 常见检查项
-
-- API Key 前后不要带空格
-- API Endpoint 填写为 \`https://apisstore.com\`
-- Claude 页面中选择的是刚刚新增的 Provider
-- 如果无法正常请求，优先检查网络、终端环境变量和 Node.js 版本
 `,
   },
   {
