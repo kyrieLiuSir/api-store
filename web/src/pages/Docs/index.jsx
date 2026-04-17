@@ -123,15 +123,54 @@ npm i -g @openai/codex
 ![示例](/vscode/search-codex-plugin.png)
 - 打开一个文件,右侧会展示codex图标,点击图标即可对话codex
 ![示例](/vscode/open-codex-plugin.png)
-
 `,
   },
   {
-    key: 'claudecode',
-    title: 'claudecode 安装教程',
+    key: 'gpt-codex',
+    title: 'codex 安装教程',
     markdown: `
 
-按照下面步骤操作，即可在 Windows 或 macOS 上完成 Claude Code 安装与接入。
+    ## 1. 下载 cc switch
+
+    - 下载地址：
+    - <https://pan.baidu.com/s/1rNw_jVWEDd6Gz0HpDY7Quw?pwd=5588>
+
+    ## 2. 安装 codex
+
+    - 下载安装nodejs: https://nodejs.org/zh-cn/download/
+    \`\`\`bash
+    npm i -g @openai/codex
+    \`\`\`
+
+    ## 3. 配置 Key
+
+    - 切换到gpt页签,点击右侧加号
+
+    ![Add Provider 示例](/img.png)
+
+    - 输入 供应商名称 ApiStore
+    - API Key：填写控制台令牌管理的秘钥
+    - API请求地址：\`https://apisstore.com/v1\`
+    - 其他可不填写,输入完成后点击右下角添加按钮
+
+    ![配置完成示例](/img_1.png)
+    - 保存后即可在列表中查看
+    ![Add Provider 示例](/codex-list.png)
+    - 打开终端,输入codex即可对话
+    ![Add Provider 示例](/codex-terminal.png)
+    ## 4. VS CODE 配置 Claude
+    - 安装codex插件
+    ![示例](/vscode/search-codex-plugin.png)
+    - 打开一个文件,右侧会展示codex图标,点击图标即可对话codex
+    ![示例](/vscode/open-codex-plugin.png)
+    `,
+  },
+  {
+    key: 'google-gemini',
+    title: 'gemini 安装教程',
+    markdown: `
+
+按照下面步骤操作，即可 Gemini 安装与接入。
 
 ---
 
@@ -148,33 +187,35 @@ npm i -g @openai/codex
 Windows 和 macOS 都可以在终端执行下面命令：
 
 \`\`\`bash
-npm install -g @anthropic-ai/claude-code
+npm install -g @google/gemini-cli
 \`\`\`
-
-如果提示没有 Node.js / npm，请先安装 Node.js 18 及以上版本，再重新执行命令。
 
 ## 3. 配置 Key
 
-- 切换到claude页签,点击右侧加号
+- 切换到gemini页签,点击右侧加号
 
-![Add Provider 示例](/claude-entry.png)
+![Add Provider 示例](/vscode/gemini-add.png)
 
 - 输入 供应商名称 ApiStore
 - API Key：填写控制台令牌管理的秘钥
 - API请求地址：\`https://apisstore.com\`
 - 其他可不填写,输入完成后点击右下角添加按钮
 
-![配置完成示例](/claude-form.png)
+![配置完成示例](/vscode/gemini-form.png)
 - 保存后即可在列表中查看
-![Add Provider 示例](/claude-list.png)
-- 打开终端,输入claude即可对话
-![示例](/claude-terminal.png)
+![Add Provider 示例](/vscode/gemini-list.png)
+- 打开终端,输入gemini即可对话
+![示例](/vscode/gemini-terminal.png)
 
-## 4. VS CODE 配置 Claude
-- 安装clude插件
-![示例](/vscode/search-claude-plugin.png)
-- 打开项目的一个文件,右侧会展示claude图标,点击图标即可对话claude
-![示例](/vscode/open-claude-plugin.png)
+## 4. VS CODE 配置 Gemini
+- 安装gemini插件
+![示例](/vscode/gemini-plugin-search.png)
+- 打开插件,点击Bring my own API Key
+![示例](/vscode/gemini-plugin-key.png)
+- 输入相关信息,base url填写https://apisstore.com
+![示例](/vscode/gemini-plugin-form.png)
+- 配置完成即可对话
+![示例](/vscode/gemini-plugin-chat.png)
 ---
 
 `,
