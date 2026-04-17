@@ -118,6 +118,11 @@ npm i -g @openai/codex
 ![Add Provider 示例](/codex-list.png)
 - 打开终端,输入codex即可对话
 ![Add Provider 示例](/codex-terminal.png)
+## 4. VS CODE 配置 Claude
+- 安装codex插件
+![示例](/vscode/search-codex-plugin.png)
+- 打开一个文件,右侧会展示codex图标,点击图标即可对话codex
+![示例](/vscode/open-codex-plugin.png)
 
 `,
   },
@@ -164,6 +169,12 @@ npm install -g @anthropic-ai/claude-code
 ![Add Provider 示例](/claude-list.png)
 - 打开终端,输入claude即可对话
 ![示例](/claude-terminal.png)
+
+## 4. VS CODE 配置 Claude
+- 安装clude插件
+![示例](/vscode/search-claude-plugin.png)
+- 打开项目的一个文件,右侧会展示claude图标,点击图标即可对话claude
+![示例](/vscode/open-claude-plugin.png)
 ---
 
 `,
