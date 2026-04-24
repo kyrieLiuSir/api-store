@@ -55,6 +55,16 @@ func GetTopUpByTradeNo(tradeNo string) *TopUp {
 	return topUp
 }
 
+func validateTopUpPaymentMethod(topUp *TopUp, expectedMethod string) error {
+	if topUp == nil {
+		return errors.New("充值订单不存在")
+	}
+	if topUp.PaymentMethod != expectedMethod {
+		return errors.New("充值订单支付方式错误")
+	}
+	return nil
+}
+
 func Recharge(referenceId string, customerId string) (err error) {
 	if referenceId == "" {
 		return errors.New("未提供支付单号")
@@ -72,6 +82,10 @@ func Recharge(referenceId string, customerId string) (err error) {
 		err := tx.Set("gorm:query_option", "FOR UPDATE").Where(refCol+" = ?", referenceId).First(topUp).Error
 		if err != nil {
 			return errors.New("充值订单不存在")
+		}
+
+		if err := validateTopUpPaymentMethod(topUp, "stripe"); err != nil {
+			return err
 		}
 
 		if topUp.Status != common.TopUpStatusPending {
@@ -325,6 +339,10 @@ func RechargeCreem(referenceId string, customerEmail string, customerName string
 			return errors.New("充值订单不存在")
 		}
 
+		if err := validateTopUpPaymentMethod(topUp, "creem"); err != nil {
+			return err
+		}
+
 		if topUp.Status != common.TopUpStatusPending {
 			return errors.New("充值订单状态错误")
 		}
@@ -394,6 +412,10 @@ func RechargeWaffo(tradeNo string) (err error) {
 		err := tx.Set("gorm:query_option", "FOR UPDATE").Where(refCol+" = ?", tradeNo).First(topUp).Error
 		if err != nil {
 			return errors.New("充值订单不存在")
+		}
+
+		if err := validateTopUpPaymentMethod(topUp, "waffo"); err != nil {
+			return err
 		}
 
 		if topUp.Status == common.TopUpStatusSuccess {

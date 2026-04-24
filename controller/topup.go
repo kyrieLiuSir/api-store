@@ -340,6 +340,10 @@ func EpayNotify(c *gin.Context) {
 			log.Printf("易支付回调未找到订单: %v", verifyInfo)
 			return
 		}
+		if !operation_setting.ContainsPayMethod(topUp.PaymentMethod) {
+			log.Printf("易支付回调订单支付方式错误: trade_no=%s, payment_method=%s", topUp.TradeNo, topUp.PaymentMethod)
+			return
+		}
 		if topUp.Status == "pending" {
 			topUp.Status = "success"
 			err := topUp.Update()
@@ -463,4 +467,3 @@ func AdminCompleteTopUp(c *gin.Context) {
 	}
 	common.ApiSuccess(c, nil)
 }
-
