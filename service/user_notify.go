@@ -22,6 +22,32 @@ func NotifyRootUser(t string, subject string, content string) {
 	}
 }
 
+func NotifyErrorLogWatchers(subject string, content string) {
+	var users []model.User
+	if err := model.DB.
+		Select("id", "email", "role", "status", "setting").
+		Where("status = ? AND role >= ?", common.UserStatusEnabled, common.RoleAdminUser).
+		Find(&users).Error; err != nil {
+		common.SysLog(fmt.Sprintf("failed to query error log notification users: %s", err.Error()))
+		return
+	}
+
+	notification := dto.NewNotify(dto.NotifyTypeErrorLog, subject, content, nil)
+	sentCount := 0
+	for _, user := range users {
+		userSetting := user.GetSetting()
+		if !userSetting.ErrorLogNotifyEnabled {
+			continue
+		}
+		if err := NotifyUser(user.Id, user.Email, userSetting, notification); err != nil {
+			common.SysLog(fmt.Sprintf("failed to notify user %d for error log: %s", user.Id, err.Error()))
+			continue
+		}
+		sentCount++
+	}
+	common.SysLog(fmt.Sprintf("error log notifications sent: %d", sentCount))
+}
+
 func NotifyUpstreamModelUpdateWatchers(subject string, content string) {
 	var users []model.User
 	if err := model.DB.

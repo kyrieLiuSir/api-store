@@ -486,6 +486,21 @@ const NotificationSettings = ({
                   />
                 )}
 
+                {isAdminOrRoot && (
+                  <Form.Switch
+                    field='errorLogNotifyEnabled'
+                    label={t('接收错误日志通知')}
+                    checkedText={t('开')}
+                    uncheckedText={t('关')}
+                    onChange={(value) =>
+                      handleFormChange('errorLogNotifyEnabled', value)
+                    }
+                    extraText={t(
+                      '仅管理员可用。开启后，系统记录新的错误日志时，会按你当前选择的通知方式发送提醒。',
+                    )}
+                  />
+                )}
+
                 {/* 邮件通知设置 */}
                 {notificationSettings.warningType === 'email' && (
                   <Form.Input

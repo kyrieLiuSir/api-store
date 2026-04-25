@@ -1042,6 +1042,7 @@ type UpdateUserSettingRequest struct {
 	GotifyToken                      string  `json:"gotify_token,omitempty"`
 	GotifyPriority                   int     `json:"gotify_priority,omitempty"`
 	UpstreamModelUpdateNotifyEnabled *bool   `json:"upstream_model_update_notify_enabled,omitempty"`
+	ErrorLogNotifyEnabled            *bool   `json:"error_log_notify_enabled,omitempty"`
 	AcceptUnsetModelRatioModel       bool    `json:"accept_unset_model_ratio_model"`
 	RecordIpLog                      bool    `json:"record_ip_log"`
 }
@@ -1135,8 +1136,12 @@ func UpdateUserSetting(c *gin.Context) {
 	}
 	existingSettings := user.GetSetting()
 	upstreamModelUpdateNotifyEnabled := existingSettings.UpstreamModelUpdateNotifyEnabled
+	errorLogNotifyEnabled := existingSettings.ErrorLogNotifyEnabled
 	if user.Role >= common.RoleAdminUser && req.UpstreamModelUpdateNotifyEnabled != nil {
 		upstreamModelUpdateNotifyEnabled = *req.UpstreamModelUpdateNotifyEnabled
+	}
+	if user.Role >= common.RoleAdminUser && req.ErrorLogNotifyEnabled != nil {
+		errorLogNotifyEnabled = *req.ErrorLogNotifyEnabled
 	}
 
 	// 构建设置
@@ -1144,6 +1149,7 @@ func UpdateUserSetting(c *gin.Context) {
 		NotifyType:                       req.QuotaWarningType,
 		QuotaWarningThreshold:            req.QuotaWarningThreshold,
 		UpstreamModelUpdateNotifyEnabled: upstreamModelUpdateNotifyEnabled,
+		ErrorLogNotifyEnabled:            errorLogNotifyEnabled,
 		AcceptUnsetRatioModel:            req.AcceptUnsetModelRatioModel,
 		RecordIpLog:                      req.RecordIpLog,
 	}

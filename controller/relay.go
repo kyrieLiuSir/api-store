@@ -389,7 +389,13 @@ func processChannelError(c *gin.Context, channelError types.ChannelError, err *t
 			startTime = time.Now()
 		}
 		useTimeSeconds := int(time.Since(startTime).Seconds())
-		model.RecordErrorLog(c, userId, channelId, modelName, tokenName, err.MaskSensitiveErrorWithStatusCode(), tokenId, useTimeSeconds, false, userGroup, other)
+		errorContent := err.MaskSensitiveErrorWithStatusCode()
+		model.RecordErrorLog(c, userId, channelId, modelName, tokenName, errorContent, tokenId, useTimeSeconds, false, userGroup, other)
+		gopool.Go(func() {
+			subject := "检测到新的错误日志"
+			notifyContent := fmt.Sprintf("用户: %s\n模型: %s\n渠道ID: %d\n令牌: %s\n请求ID: %s\n错误: %s", c.GetString("username"), modelName, channelId, tokenName, c.GetString(common.RequestIdKey), errorContent)
+			service.NotifyErrorLogWatchers(subject, notifyContent)
+		})
 	}
 
 }

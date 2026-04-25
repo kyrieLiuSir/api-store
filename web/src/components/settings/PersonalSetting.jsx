@@ -87,6 +87,7 @@ const PersonalSetting = () => {
     gotifyToken: '',
     gotifyPriority: 5,
     upstreamModelUpdateNotifyEnabled: false,
+    errorLogNotifyEnabled: false,
     acceptUnsetModelRatioModel: false,
     recordIpLog: false,
   });
@@ -161,6 +162,7 @@ const PersonalSetting = () => {
           settings.gotify_priority !== undefined ? settings.gotify_priority : 5,
         upstreamModelUpdateNotifyEnabled:
           settings.upstream_model_update_notify_enabled === true,
+        errorLogNotifyEnabled: settings.error_log_notify_enabled === true,
         acceptUnsetModelRatioModel:
           settings.accept_unset_model_ratio_model || false,
         recordIpLog: settings.record_ip_log || false,
@@ -431,6 +433,8 @@ const PersonalSetting = () => {
         })(),
         upstream_model_update_notify_enabled:
           notificationSettings.upstreamModelUpdateNotifyEnabled === true,
+        error_log_notify_enabled:
+          notificationSettings.errorLogNotifyEnabled === true,
         accept_unset_model_ratio_model:
           notificationSettings.acceptUnsetModelRatioModel,
         record_ip_log: notificationSettings.recordIpLog,
