@@ -109,8 +109,9 @@ npm i -g @openai/codex
 ![Add Provider 示例](/img.png)
 
 - 输入 供应商名称 ApiStore
-- API Key：填写控制台令牌管理的秘钥
-- API请求地址：\`https://apisstore.com/v1\`
+> **API Key：** 请填写你在控制台「令牌管理」中创建并复制的秘钥。  
+> **API请求地址：** \`https://apisstore.com/v1\`  
+> **模型：** \`gpt-5.4\`
 - 其他可不填写,输入完成后点击右下角添加按钮
 
 ![配置完成示例](/img_1.png)
@@ -159,8 +160,8 @@ npm install -g @anthropic-ai/claude-code
 ![Add Provider 示例](/claude-entry.png)
 
 - 输入 供应商名称 ApiStore
-- API Key：填写控制台令牌管理的秘钥
-- API请求地址：\`https://apisstore.com\`
+> **API Key：** 请填写你在控制台「令牌管理」中创建并复制的秘钥。  
+> **API请求地址：** \`https://apisstore.com\`
 - 其他可不填写,输入完成后点击右下角添加按钮
 
 ![配置完成示例](/claude-form.png)
@@ -210,8 +211,9 @@ npm install -g @google/gemini-cli
 ![Add Provider 示例](/vscode/gemini-add.png)
 
 - 输入 供应商名称 ApiStore
-- API Key：填写控制台令牌管理的秘钥
-- API请求地址：\`https://apisstore.com\`
+> **API Key：** 请填写你在控制台「令牌管理」中创建并复制的秘钥。  
+> **API请求地址：** \`https://apisstore.com\`  
+> **模型：** \`gemini-3.1-pro-preview\`
 - 其他可不填写,输入完成后点击右下角添加按钮
 
 ![配置完成示例](/vscode/gemini-form.png)
