@@ -48,7 +48,7 @@ DEBUG=true
 ```bash
 # 调试模式启动
 GIN_MODE=debug go run .
-SQL_DSN=postgresql://$(whoami)@localhost:5432/new-api?sslmode=disable GIN_MODE=debug go run .
+ERROR_LOG_ENABLED=true SQL_DSN=postgresql://$(whoami)@localhost:5432/new-api?sslmode=disable GIN_MODE=debug go run .
 ```
 
 后端默认监听 **http://localhost:3000**。
