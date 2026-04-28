@@ -23,6 +23,15 @@ import { Button, Card } from '@douyinfe/semi-ui';
 import { useSearchParams } from 'react-router-dom';
 import MarkdownRenderer from '../../components/common/markdown/MarkdownRenderer';
 
+const CONTACT_HELP_MARKDOWN = `
+
+---
+
+## 如需帮助，请扫码联系客服
+
+![联系客服二维码](/wechat-qrcode.png)
+`;
+
 const DOC_ITEMS = [
   {
     key: 'quickstart',
@@ -309,6 +318,10 @@ const Docs = () => {
     () => DOC_ITEMS.find((item) => item.key === currentDoc) || DOC_ITEMS[0],
     [currentDoc],
   );
+  const activeDocContent = useMemo(
+    () => `${activeDoc.markdown.trimEnd()}\n${CONTACT_HELP_MARKDOWN}`,
+    [activeDoc],
+  );
 
   const handleDocChange = (docKey) => {
     setSearchParams({ doc: docKey });
@@ -344,7 +357,7 @@ const Docs = () => {
             bodyStyle={{ padding: 24 }}
             className='min-w-0'
           >
-            <MarkdownRenderer content={activeDoc.markdown} />
+            <MarkdownRenderer content={activeDocContent} />
           </Card>
         </div>
       </div>
