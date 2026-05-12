@@ -1094,7 +1094,7 @@ func TopUp(c *gin.Context) {
 		common.ApiError(c, err)
 		return
 	}
-	quota, err := model.Redeem(req.Key, id)
+	result, err := model.Redeem(req.Key, id)
 	if err != nil {
 		if errors.Is(err, model.ErrRedeemFailed) {
 			common.ApiErrorI18n(c, i18n.MsgRedeemFailed)
@@ -1103,10 +1103,14 @@ func TopUp(c *gin.Context) {
 		common.ApiError(c, err)
 		return
 	}
+	var data any = result
+	if result.Type == common.RedemptionCodeTypeQuota {
+		data = result.Quota
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
-		"data":    quota,
+		"data":    data,
 	})
 }
 

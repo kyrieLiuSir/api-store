@@ -28,6 +28,7 @@ import {
   renderQuotaWithAmount,
   copy,
   getQuotaPerUnit,
+  timestamp2string,
 } from '../../helpers';
 import { Modal, Toast } from '@douyinfe/semi-ui';
 import { useTranslation } from 'react-i18next';
@@ -160,17 +161,43 @@ const TopUp = () => {
       const { success, message, data } = res.data;
       if (success) {
         showSuccess(t('兑换成功！'));
-        Modal.success({
-          title: t('兑换成功！'),
-          content: t('成功兑换额度：') + renderQuota(data),
-          centered: true,
-        });
-        if (userState.user) {
-          const updatedUser = {
-            ...userState.user,
-            quota: userState.user.quota + data,
-          };
-          userDispatch({ type: 'login', payload: updatedUser });
+        if (typeof data === 'number') {
+          Modal.success({
+            title: t('兑换成功！'),
+            content: t('成功兑换额度：') + renderQuota(data),
+            centered: true,
+          });
+          if (userState.user) {
+            const updatedUser = {
+              ...userState.user,
+              quota: userState.user.quota + data,
+            };
+            userDispatch({ type: 'login', payload: updatedUser });
+          }
+        } else if (data?.type === 'subscription') {
+          const plan = data.subscription_plan || {};
+          const subscription = data.subscription || {};
+          Modal.success({
+            title: t('兑换成功！'),
+            content: `${t('成功兑换订阅套餐：')}${plan.title || t('订阅套餐')}${subscription.end_time ? `，${t('有效期至')} ${timestamp2string(subscription.end_time)}` : ''}`,
+            centered: true,
+          });
+          await getSubscriptionSelf();
+          await getUserQuota();
+        } else {
+          const quota = data?.quota || 0;
+          Modal.success({
+            title: t('兑换成功！'),
+            content: t('成功兑换额度：') + renderQuota(quota),
+            centered: true,
+          });
+          if (userState.user && quota > 0) {
+            const updatedUser = {
+              ...userState.user,
+              quota: userState.user.quota + quota,
+            };
+            userDispatch({ type: 'login', payload: updatedUser });
+          }
         }
         setRedemptionCode('');
       } else {

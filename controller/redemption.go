@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/QuantumNous/new-api/common"
@@ -10,6 +12,7 @@ import (
 	"github.com/QuantumNous/new-api/model"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetAllRedemptions(c *gin.Context) {
@@ -65,44 +68,39 @@ func AddRedemption(c *gin.Context) {
 		common.ApiError(c, err)
 		return
 	}
-	if utf8.RuneCountInString(redemption.Name) == 0 || utf8.RuneCountInString(redemption.Name) > 20 {
-		common.ApiErrorI18n(c, i18n.MsgRedemptionNameLength)
+	if err := validateRedemptionPayload(c, &redemption, false); err != nil {
+		common.ApiErrorMsg(c, err.Error())
 		return
 	}
-	if redemption.Count <= 0 {
-		common.ApiErrorI18n(c, i18n.MsgRedemptionCountPositive)
-		return
-	}
-	if redemption.Count > 100 {
-		common.ApiErrorI18n(c, i18n.MsgRedemptionCountMax)
-		return
-	}
-	if valid, msg := validateExpiredTime(c, redemption.ExpiredTime); !valid {
-		c.JSON(http.StatusOK, gin.H{"success": false, "message": msg})
-		return
-	}
-	var keys []string
-	for i := 0; i < redemption.Count; i++ {
-		key := common.GetUUID()
-		cleanRedemption := model.Redemption{
-			UserId:      c.GetInt("id"),
-			Name:        redemption.Name,
-			Key:         key,
-			CreatedTime: common.GetTimestamp(),
-			Quota:       redemption.Quota,
-			ExpiredTime: redemption.ExpiredTime,
+	keys := make([]string, 0, redemption.Count)
+	err = model.DB.Transaction(func(tx *gorm.DB) error {
+		for i := 0; i < redemption.Count; i++ {
+			key := common.GetUUID()
+			cleanRedemption := model.Redemption{
+				UserId:             c.GetInt("id"),
+				Name:               redemption.Name,
+				Key:                key,
+				CreatedTime:        common.GetTimestamp(),
+				Quota:              redemption.Quota,
+				Type:               redemption.Type,
+				SubscriptionPlanId: redemption.SubscriptionPlanId,
+				ExpiredTime:        redemption.ExpiredTime,
+			}
+			if err := tx.Create(&cleanRedemption).Error; err != nil {
+				return err
+			}
+			keys = append(keys, key)
 		}
-		err = cleanRedemption.Insert()
-		if err != nil {
-			common.SysError("failed to insert redemption: " + err.Error())
-			c.JSON(http.StatusOK, gin.H{
-				"success": false,
-				"message": i18n.T(c, i18n.MsgRedemptionCreateFailed),
-				"data":    keys,
-			})
-			return
-		}
-		keys = append(keys, key)
+		return nil
+	})
+	if err != nil {
+		common.SysError("failed to insert redemption: " + err.Error())
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": i18n.T(c, i18n.MsgRedemptionCreateFailed),
+			"data":    keys,
+		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -140,13 +138,18 @@ func UpdateRedemption(c *gin.Context) {
 		return
 	}
 	if statusOnly == "" {
-		if valid, msg := validateExpiredTime(c, redemption.ExpiredTime); !valid {
-			c.JSON(http.StatusOK, gin.H{"success": false, "message": msg})
+		if cleanRedemption.Status == common.RedemptionCodeStatusUsed {
+			common.ApiErrorMsg(c, "已使用的兑换码不能修改")
 			return
 		}
-		// If you add more fields, please also update redemption.Update()
+		if err := validateRedemptionPayload(c, &redemption, true); err != nil {
+			common.ApiErrorMsg(c, err.Error())
+			return
+		}
 		cleanRedemption.Name = redemption.Name
 		cleanRedemption.Quota = redemption.Quota
+		cleanRedemption.Type = redemption.Type
+		cleanRedemption.SubscriptionPlanId = redemption.SubscriptionPlanId
 		cleanRedemption.ExpiredTime = redemption.ExpiredTime
 	}
 	if statusOnly != "" {
@@ -177,6 +180,57 @@ func DeleteInvalidRedemption(c *gin.Context) {
 		"data":    rows,
 	})
 	return
+}
+
+func validateRedemptionPayload(c *gin.Context, redemption *model.Redemption, isEdit bool) error {
+	if utf8.RuneCountInString(redemption.Name) == 0 || utf8.RuneCountInString(redemption.Name) > 20 {
+		return errors.New(i18n.T(c, i18n.MsgRedemptionNameLength))
+	}
+	if !isEdit {
+		if redemption.Count <= 0 {
+			return errors.New(i18n.T(c, i18n.MsgRedemptionCountPositive))
+		}
+		if redemption.Count > 100 {
+			return errors.New(i18n.T(c, i18n.MsgRedemptionCountMax))
+		}
+	}
+	if valid, msg := validateExpiredTime(c, redemption.ExpiredTime); !valid {
+		return errors.New(msg)
+	}
+	redemption.Type = normalizeRedemptionType(redemption.Type)
+	if redemption.Type == "" {
+		return errors.New("兑换码类型无效")
+	}
+	if redemption.Type == common.RedemptionCodeTypeSubscription {
+		if redemption.SubscriptionPlanId <= 0 {
+			return errors.New("请选择订阅套餐")
+		}
+		plan, err := model.GetSubscriptionPlanById(redemption.SubscriptionPlanId)
+		if err != nil {
+			return errors.New("订阅套餐不存在")
+		}
+		if !plan.Enabled {
+			return errors.New("订阅套餐已禁用")
+		}
+		redemption.Quota = 0
+		return nil
+	}
+	if redemption.Quota <= 0 {
+		return errors.New("额度必须大于0")
+	}
+	redemption.SubscriptionPlanId = 0
+	return nil
+}
+
+func normalizeRedemptionType(redemptionType string) string {
+	switch strings.TrimSpace(redemptionType) {
+	case "", common.RedemptionCodeTypeQuota:
+		return common.RedemptionCodeTypeQuota
+	case common.RedemptionCodeTypeSubscription:
+		return common.RedemptionCodeTypeSubscription
+	default:
+		return ""
+	}
 }
 
 func validateExpiredTime(c *gin.Context, expired int64) (bool, string) {

@@ -25,6 +25,8 @@ import {
   REDEMPTION_STATUS,
   REDEMPTION_STATUS_MAP,
   REDEMPTION_ACTIONS,
+  REDEMPTION_TYPE,
+  REDEMPTION_TYPE_MAP,
 } from '../../../constants/redemption.constants';
 
 /**
@@ -48,6 +50,8 @@ const renderTimestamp = (timestamp) => {
 /**
  * Render redemption code status
  */
+const normalizeRedemptionType = (type) => type || REDEMPTION_TYPE.QUOTA;
+
 const renderStatus = (status, record, t) => {
   if (isExpired(record)) {
     return (
@@ -105,9 +109,33 @@ export const getRedemptionsColumns = ({
       },
     },
     {
-      title: t('额度'),
-      dataIndex: 'quota',
+      title: t('类型'),
+      dataIndex: 'type',
       render: (text) => {
+        const type = normalizeRedemptionType(text);
+        const typeConfig = REDEMPTION_TYPE_MAP[type] || REDEMPTION_TYPE_MAP[REDEMPTION_TYPE.QUOTA];
+        return (
+          <Tag color={typeConfig.color} shape='circle'>
+            {t(typeConfig.text)}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: t('权益'),
+      dataIndex: 'quota',
+      render: (text, record) => {
+        const type = normalizeRedemptionType(record.type);
+        if (type === REDEMPTION_TYPE.SUBSCRIPTION) {
+          const plan = record.subscription_plan;
+          return (
+            <div>
+              <Tag color='purple' shape='circle'>
+                {plan?.title || `${t('套餐')} #${record.subscription_plan_id || '-'}`}
+              </Tag>
+            </div>
+          );
+        }
         return (
           <div>
             <Tag color='grey' shape='circle'>
